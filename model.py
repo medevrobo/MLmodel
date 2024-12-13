@@ -189,7 +189,7 @@ def train_initial_model():
         'max_iter': [100, 200, 300]
     }
 
-    model = LogisticRegression()
+    model = LogisticRegression(class_weight='balanced')
     grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=5, scoring='accuracy')
     grid_search.fit(X_train_tfidf, y_train)
 
@@ -257,7 +257,7 @@ def retrain_model():
     y = combined_df['label']
 
     # Retrain the model
-    new_model = LogisticRegression()
+    new_model = LogisticRegression(class_weight='balanced')
     new_model.fit(X, y)
 
     # Save the updated model
@@ -289,7 +289,7 @@ def retrain_model_if_needed():
         X = vectorizer.fit_transform(combined_data['clean_text'])
         y = combined_data['label']
 
-        new_model = LogisticRegression()
+        new_model = LogisticRegression(class_weight='balanced')
         new_model.fit(X, y)
 
         # Save updated model
