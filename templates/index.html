@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            text-align: center;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        textarea {
+            width: 80%;
+            height: 100px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            display: inline-block;
+            text-decoration: none;
+            padding: 10px 20px;
+            color: #fff;
+            background: #007BFF;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        p {
+            margin: 10px 0;
+            font-size: 1.2rem;
+        }
+        .feedback-form {
+            text-align: left;
+            display: inline-block;
+        }
+        label {
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+        .prediction {
+            font-weight: bold;
+            color: #087ACC;
+        }
+        .user-input {
+            font-weight: bold;
+            color: rgb(255, 119, 0);
+        }
+        .link-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Sentiment Analysis</h1>
+    </header>
+    <div class="container">
+        <form method="POST">
+            <textarea name="user_input" placeholder="Enter text here"></textarea><br>
+            <button type="submit">Submit</button>
+        </form>
+        {% if prediction %}
+        <br>
+        <p>User Input: <span class="user-input">{{ user_input }}</span></p>
+        <p>Predicted Sentiment: <span class="prediction">{{ prediction }}</span></p>
+        <form method="POST" class="feedback-form">
+            <input type="hidden" name="hidden_user_input" value="{{ user_input }}">
+            <input type="hidden" name="hidden_model_prediction" value="{{ prediction }}">
+            <h3>Is this prediction correct? Provide feedback:</h3>
+            <input type="radio" id="positive" name="feedback" value="Positive" required>
+            <label for="positive">Positive</label><br>
+            <input type="radio" id="neutral" name="feedback" value="Neutral">
+            <label for="neutral">Neutral</label><br>
+            <input type="radio" id="negative" name="feedback" value="Negative">
+            <label for="negative">Negative</label><br><br>
+            <button type="submit">Submit Feedback</button>
+        </form>
+        {% endif %}
+        <div class="link-button">
+            <a href="/dashboard"><button>View Dashboard</button></a>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Model Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        section {
+            margin: 20px 0;
+        }
+        .card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card h2 {
+            margin-top: 0;
+        }
+        .accuracy {
+            font-size: 1.5rem;
+            color: #007BFF;
+        }
+        .button {
+            display: inline-block;
+            text-decoration: none;
+            padding: 10px 20px;
+            color: #fff;
+            background: #007BFF;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Sentiment Model Dashboard</h1>
+    </header>
+    <div class="container">
+        <section>
+            <div class="card">
+                <h2>Performance on Original Test Data</h2>
+                <p>Accuracy: <span class="accuracy">{{ test_data_accuracy }}%</span></p>
+            </div>
+            <div class="card">
+                <h2>Performance on New Feedback Data</h2>
+                {% if feedback_data_accuracy != "No data" %}
+                <p>Accuracy: <span class="accuracy">{{ feedback_data_accuracy }}%</span></p>
+                {% else %}
+                <p>No user feedback data available yet for evaluation.</p>
+                {% endif %}
+            </div>
+        </section>
+        <section>
+            <div class="card">
+                <h2>Sentiment Trends</h2>
+                <p>Total Feedback Entries: {{ total_feedback }}</p>
+                <div class="chart-container">
+                    <canvas id="sentimentTrendChart"></canvas>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="card">
+                <h2>Model Training</h2>
+                <p>Retraining occurs automatically after 10 new feedback entries are received.</p>
+                <p>Ensure consistent feedback submission for model improvements!</p>
+            </div>
+        </section>
+        <a class="button" href="/">Back to Sentiment Analysis</a>
+    </div>
+
+    <script>
+        // Sentiment data passed from Flask
+        const sentimentCounts = {{ sentiment_counts|tojson }};
+        const sentimentLabels = Object.keys(sentimentCounts);
+        const sentimentValues = Object.values(sentimentCounts);
+
+        // Chart.js to render sentiment trends
+        const ctx = document.getElementById('sentimentTrendChart').getContext('2d');
+        const sentimentTrendChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: sentimentLabels,
+                datasets: [{
+                    label: 'Feedback Counts',
+                    data: sentimentValues,
+                    backgroundColor: ['#007BFF', '#FFC107', '#DC3545'],
+                    borderColor: ['#0056b3', '#e0a800', '#b02a37'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
