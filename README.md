@@ -66,6 +66,7 @@ Performance metrics are logged to monitor the model over time.
   - Submitting text for sentiment analysis.
   - Viewing predicted sentiment.
   - Providing feedback on predictions.
+- It is also deployed on Render: https://mlmodel-j2zp.onrender.com
 
 ### Key Components
 1. **Home Page**: Text input form for real-time sentiment analysis.
